@@ -66,6 +66,8 @@ def test(model, data):
 
 def main():
     parser = argparse.ArgumentParser(description="GEARSage for DGraphFin Dataset")
+    parser.add_argument("--dataset", type=str, default="DGraphFin")
+    parser.add_argument("--model", type=str, default="GEARSage")
     parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--epochs", type=int, default=500)
     parser.add_argument("--hiddens", type=int, default=96)
@@ -80,7 +82,7 @@ def main():
     model_dir = prepare_folder(args.dataset, args.model)
     print("model_dir:", model_dir)
     set_seed(42)
-    dataset = DGraphFin(root="./", name="DGraphFin")
+    dataset = DGraphFin(root="./dataset", name="DGraphFin")
 
     nlabels = 2
 
@@ -92,7 +94,7 @@ def main():
         "test": data.test_mask,
     }
 
-    data = data_process(data, test=True).to(device)
+    data = data_process(data).to(device)
     train_idx = split_idx["train"].to(device)
 
     data.train_pos = train_idx[data.y[train_idx] == 1]
