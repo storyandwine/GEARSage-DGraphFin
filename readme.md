@@ -20,7 +20,6 @@ python main.py
 
 ## Results:
 Performance on **DGraphFin**(10 runs):
-0.8387553562234347 0.00019525288374594048
 | Methods  | Params | Valid AUC       | Test AUC        |
 | :------- | ------ | --------------- | --------------- |
 | GEARSage | 50544  | 0.8388 ± 0.0002 | 0.8460 ± 0.0002 |
