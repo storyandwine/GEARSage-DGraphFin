@@ -21,12 +21,10 @@ def add_feature_flag(x):
     return torch.cat((x, feature_flag), dim=1)
 
 
-def add_label_feature(x, y, valid_mask=None):
+def add_label_feature(x, y):
     y = y.clone()
-    if valid_mask is not None:
-        y[valid_mask] = 4
+    # All fraudulent nodes are temporarily considered as normal users to simulate the scenario of mining fraudulent users from normal users.
     y[y == 1] = 0
-    y[y == 4] = 0
     y_one_hot = F.one_hot(y).squeeze()
     return torch.cat((x, y_one_hot[:, :-1]), dim=1)
 
@@ -91,7 +89,7 @@ def data_process(data):
 
     x = add_feature_flag(x)
     x = add_label_counts(x, edge_index, data.y)
-    x = add_label_feature(x, data.y, data.valid_mask)
+    x = add_label_feature(x, data.y)
     data.x = x
     if data.y.dim() == 2:
         data.y = data.y.squeeze(1)
